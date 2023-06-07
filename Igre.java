@@ -4,25 +4,31 @@ import java.io.InputStreamReader;
 public class Igre {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StiriVVrsto stiriVVrsto;
-
+        
         while(true) {
             try {
                 System.out.println();
                 System.out.println("Vnesite: ");
                 System.out.println("0 -izhod");
                 System.out.println("1 -Stiri v vrsto (nova igra)");
+                System.out.println("2 -Minolovec (nova igra)");
                 String a = br.readLine();
                 switch(a) {
+                    case "0":
+                    return;
                     case "1":
                         System.out.println("**************");
                         System.out.println();
                         System.out.println("Stiri V Vrsto!");
-                        stiriVVrsto = new StiriVVrsto();
+                        StiriVVrsto stiriVVrsto = new StiriVVrsto();
                         stiriVVrsto.igraj();
                         break;
                     case "2":
-                        return;
+                        System.out.println("**************");
+                        System.out.println();
+                        System.out.println("Minolovec!");
+                        Minolovec minolovec = new Minolovec();
+                        minolovec.igraj();
                 }
             }
             catch (Exception e) {
