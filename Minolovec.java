@@ -39,8 +39,9 @@ public class Minolovec {
 
         while(true) {
             try {
-                izpisiPolja();
                 // izpisiSkritaPolja();
+                izpisiPolja();
+
                 System.out.println();
                 System.out.println("Kam igras? (vrstica stolpec npr: \"0 12\")");
                 String kam = br.readLine();
@@ -113,66 +114,17 @@ public class Minolovec {
             for(int j=0; j<this.STEVILO_STOLPCEV; j++) {
                 if(this.skritaPolja[i][j] == 9) continue;
                 int steviloMinVOkolici =0;
-                if(i==0 && j==0) {
-                    if(this.skritaPolja[i][j+1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i+1][j] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i+1][j+1] == 9) steviloMinVOkolici++;
+                for(int k=i-1; k<=i+1; k++) {
+                    for(int m=j-1; m<=j+1; m++) {
+                        if(k<0 || m<0 || i>=this.STEVILO_VRSTIC-1 || m>=this.STEVILO_STOLPCEV-1){
+                            continue;
+                        }
+                        if(this.skritaPolja[k][m] == 9) {
+                            steviloMinVOkolici++;
+                        }
+                    }
                 }
-                else if(i==this.STEVILO_VRSTIC-1 && j==0) {
-                    if(this.skritaPolja[i-1][j] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i-1][j+1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i][j+1] == 9) steviloMinVOkolici++;
-                }
-                else if(i==0 && j==this.STEVILO_STOLPCEV-1) {
-                    if(this.skritaPolja[i][j-1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i+1][j-1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i+1][j] == 9) steviloMinVOkolici++;
-                }
-                else if(i==this.STEVILO_VRSTIC-1 && j==this.STEVILO_STOLPCEV-1) {
-                    if(this.skritaPolja[i-1][j-1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i-1][j] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i][j-1] == 9) steviloMinVOkolici++;
-                }
-                else if(i==0) {
-                    if(this.skritaPolja[i][j-1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i][j+1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i+1][j-1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i+1][j] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i+1][j+1] == 9) steviloMinVOkolici++;
-                }
-                else if(j==0) {
-                    if(this.skritaPolja[i+1][j] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i+1][j+1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i][j+1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i-1][j] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i-1][j+1] == 9) steviloMinVOkolici++;
-                }
-                else if(i==this.STEVILO_VRSTIC-1) {
-                    if(this.skritaPolja[i-1][j-1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i-1][j] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i-1][j+1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i][j-1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i][j+1] == 9) steviloMinVOkolici++;
-                }
-                else if(j==this.STEVILO_STOLPCEV-1) {
-                    if(this.skritaPolja[i-1][j-1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i-1][j] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i][j-1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i+1][j-1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i+1][j] == 9) steviloMinVOkolici++;
-                }
-                else {
-                    if(this.skritaPolja[i-1][j-1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i-1][j] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i-1][j+1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i][j-1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i][j+1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i+1][j-1] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i+1][j] == 9) steviloMinVOkolici++;
-                    if(this.skritaPolja[i+1][j+1] == 9) steviloMinVOkolici++;
-                }
-                this.skritaPolja[i][j] = steviloMinVOkolici;
-                
+                this.skritaPolja[i][j] = steviloMinVOkolici;  
             }
         }
     }
@@ -204,7 +156,6 @@ public class Minolovec {
             odpriObmocjeRekurzivno(i, j+1);
             odpriObmocjeRekurzivno(i, j-1);
         }
-        
     }
 
     private boolean preveriZmago() {
