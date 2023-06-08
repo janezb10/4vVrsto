@@ -9,10 +9,25 @@ public class Minolovec {
     char[][] polja;
     int[][] skritaPolja;
 
-    public Minolovec() {
-        this.STEVILO_MIN = 99;
-        this.STEVILO_STOLPCEV = 30;
-        this.STEVILO_VRSTIC = 16;
+    public Minolovec(int tezavnost) {
+        switch(tezavnost) {
+            case 1:
+                this.STEVILO_MIN = 10;
+                this.STEVILO_STOLPCEV = 10;
+                this.STEVILO_VRSTIC = 8;
+                break;
+            case 2:
+                this.STEVILO_MIN = 40;
+                this.STEVILO_STOLPCEV = 18;
+                this.STEVILO_VRSTIC = 14;
+                break;
+            case 3:
+                this.STEVILO_MIN = 99;
+                this.STEVILO_STOLPCEV = 24;
+                this.STEVILO_VRSTIC = 20;
+                break; 
+        }
+
         this.polja = new char[this.STEVILO_VRSTIC][this.STEVILO_STOLPCEV];
         this.skritaPolja = new int[this.STEVILO_VRSTIC][this.STEVILO_STOLPCEV];
     }
@@ -20,13 +35,13 @@ public class Minolovec {
     public void igraj() throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        this.postaviMine();
+        postaviMine();
 
         while(true) {
             try {
-                this.izpisiPolja();
-                this.izpisiSkritaPolja();
-
+                izpisiPolja();
+                // izpisiSkritaPolja();
+                System.out.println();
                 System.out.println("Kam igras? (vrstica stolpec npr: \"0 12\")");
                 String kam = br.readLine();
                 int vrstica = Integer.parseInt(kam.split(" ")[0]);
@@ -36,8 +51,13 @@ public class Minolovec {
                     System.out.println("KONEC IGRE - zadel si mino!");
                     return;
                 }
-                odpriObmocje(vrstica, stolpec);
-
+                odpriObmocjeRekurzivno(vrstica, stolpec);
+                if(preveriZmago()) {
+                    izpisiPolja();
+                    System.out.println();
+                    System.out.println("ČESTITAM!! - nasel si vse mine!");
+                    return;
+                }
             }
             catch(Exception e) {
 
@@ -45,15 +65,26 @@ public class Minolovec {
         }
     }
 
-    public void izpisiPolja() {
+    private void izpisiPolja() {
+        System.out.println();
+        System.out.print("   |");
+        for(int i=0; i<this.STEVILO_STOLPCEV; i++) {
+            System.out.print((i%10) + "|");
+        }
         System.out.println();
         for(int i=0; i<this.STEVILO_VRSTIC; i++) {
             String stevilkaVrstice = i / 10 >= 1 ? (i + " |") : (" " + i + " |");
             System.out.print(stevilkaVrstice);
             for(int j=0; j<this.STEVILO_STOLPCEV; j++) {
                 if(this.polja[i][j] == '\u0000') this.polja[i][j] = '#';
-                System.out.print(this.polja[i][j] + "|");
+                if(this.polja[i][j] == '0') {
+                    System.out.print('_' + "|");
+                }
+                else {
+                    System.out.print(this.polja[i][j] + "|");
+                }
             }
+            System.out.print(" "+i);
             System.out.println();
         }
         System.out.print("   |");
@@ -63,7 +94,7 @@ public class Minolovec {
         System.out.println();
     }
 
-    public void postaviMine() {
+    private void postaviMine() {
         Random rand = new Random();
         
         int steviloVsehPolj = this.STEVILO_STOLPCEV * this.STEVILO_VRSTIC;
@@ -146,7 +177,7 @@ public class Minolovec {
         }
     }
 
-    public void izpisiSkritaPolja() {
+    private void izpisiSkritaPolja() {
         System.out.println();
         for(int i=0; i<this.STEVILO_VRSTIC; i++) {
             for(int j=0; j<this.STEVILO_STOLPCEV; j++) {
@@ -157,21 +188,36 @@ public class Minolovec {
         System.out.println();
     }
 
-    public void odpriObmocje(int i, int j) {
-        this.polja[i][j] = (char)(this.skritaPolja[i][j]+'0');
-        odpriObmocjeRekurzivno(i, j);
-    }
-    public void odpriObmocjeRekurzivno(int i, int j) {
-        if(i<0 || j<0 || i >= this.STEVILO_VRSTIC || j>= this.STEVILO_STOLPCEV || this.skritaPolja[i][j] == 9) {
+
+    private void odpriObmocjeRekurzivno(int i, int j) {
+        if(i<0 || j<0 || i >= this.STEVILO_VRSTIC || j>= this.STEVILO_STOLPCEV || this.skritaPolja[i][j] == 9 || this.polja[i][j] != '#') {
             return;
         }
         this.polja[i][j] = (char)(this.skritaPolja[i][j]+'0');
+        if(this.skritaPolja[i][j] == 0) {
+            odpriObmocjeRekurzivno(i+1, j+1);
+            odpriObmocjeRekurzivno(i+1, j-1);
+            odpriObmocjeRekurzivno(i-1, j+1);
+            odpriObmocjeRekurzivno(i-1, j-1);
+            odpriObmocjeRekurzivno(i+1, j);
+            odpriObmocjeRekurzivno(i-1, j);
+            odpriObmocjeRekurzivno(i, j+1);
+            odpriObmocjeRekurzivno(i, j-1);
+        }
         
     }
-    // moram prevert da ni na robu
-    // moram prevert ce je levo in desno kj gor in dol
-    // pokazem gor dol levo desno
-    // trenutni ni šit
 
+    private boolean preveriZmago() {
+        int steviloNeodkritihPolj = 0;
+        for(int i=0; i<this.STEVILO_VRSTIC; i++) {
+            for(int j=0; j<this.STEVILO_STOLPCEV; j++) {
+                if(this.polja[i][j] == '#') steviloNeodkritihPolj++;
+            }
+        }
+        if(steviloNeodkritihPolj == this.STEVILO_MIN) {
+            return true;
+        }
+        return false;
+    }
 
 }

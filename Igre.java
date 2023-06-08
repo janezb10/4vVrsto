@@ -24,10 +24,12 @@ public class Igre {
                         stiriVVrsto.igraj();
                         break;
                     case "2":
+                        System.out.println("Izberi tezavnost: (1-3)");
+                        int tezavnost = Integer.parseInt(br.readLine());
                         System.out.println("**************");
                         System.out.println();
                         System.out.println("Minolovec!");
-                        Minolovec minolovec = new Minolovec();
+                        Minolovec minolovec = new Minolovec(tezavnost);
                         minolovec.igraj();
                 }
             }
