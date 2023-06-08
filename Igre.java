@@ -32,7 +32,7 @@ public class Igre {
                 }
             }
             catch (Exception e) {
-
+                System.out.println(e);
             }
         }
     }
