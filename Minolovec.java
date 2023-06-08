@@ -116,7 +116,7 @@ public class Minolovec {
                 int steviloMinVOkolici =0;
                 for(int k=i-1; k<=i+1; k++) {
                     for(int m=j-1; m<=j+1; m++) {
-                        if(k<0 || m<0 || i>=this.STEVILO_VRSTIC-1 || m>=this.STEVILO_STOLPCEV-1){
+                        if(k<0 || m<0 || k>=this.STEVILO_VRSTIC || m>=this.STEVILO_STOLPCEV){
                             continue;
                         }
                         if(this.skritaPolja[k][m] == 9) {
