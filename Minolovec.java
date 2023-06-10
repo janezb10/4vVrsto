@@ -40,7 +40,7 @@ public class Minolovec {
         while(true) {
             try {
                 // izpisiSkritaPolja();
-                izpisiPolja();
+                izpisiPolja(false);
 
                 System.out.println();
                 System.out.println("Kam igras? (vrstica stolpec npr: \"0 12\")");
@@ -49,12 +49,14 @@ public class Minolovec {
                 int stolpec = Integer.parseInt(kam.split(" ")[1]);
                 
                 if(this.skritaPolja[vrstica][stolpec] == 9) {
+                    izpisiPolja(true);
+                    System.out.println();
                     System.out.println("KONEC IGRE - zadel si mino!");
                     return;
                 }
                 odpriObmocjeRekurzivno(vrstica, stolpec);
                 if(preveriZmago()) {
-                    izpisiPolja();
+                    izpisiPolja(true);
                     System.out.println();
                     System.out.println("ČESTITAM!! - nasel si vse mine!");
                     return;
@@ -66,7 +68,7 @@ public class Minolovec {
         }
     }
 
-    private void izpisiPolja() {
+    private void izpisiPolja(boolean konec) {
         System.out.println();
         System.out.print("   |");
         for(int i=0; i<this.STEVILO_STOLPCEV; i++) {
@@ -82,7 +84,12 @@ public class Minolovec {
                     System.out.print('_' + "|");
                 }
                 else {
-                    System.out.print(this.polja[i][j] + "|");
+                    if(konec && this.skritaPolja[i][j] == 9) {
+                        System.out.print("@" + "|");
+                    }
+                    else {
+                        System.out.print(this.polja[i][j] + "|");
+                    }
                 }
             }
             System.out.print(" "+i);
