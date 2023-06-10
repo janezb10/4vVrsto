@@ -12,6 +12,7 @@ public class Igre {
                 System.out.println("0 -izhod");
                 System.out.println("1 -Stiri v vrsto (nova igra)");
                 System.out.println("2 -Minolovec (nova igra)");
+                System.out.println("3 -Tic tac toe (nova igra)");
                 String a = br.readLine();
                 switch(a) {
                     case "0":
@@ -31,6 +32,14 @@ public class Igre {
                         System.out.println("Minolovec!");
                         Minolovec minolovec = new Minolovec(tezavnost);
                         minolovec.igraj();
+                        break;
+                    case "3":
+                        System.out.println("**************");
+                        System.out.println();
+                        System.out.println("Tic Tac Toe");
+                        TicTacToe ticTacToe = new TicTacToe();
+                        ticTacToe.igraj();
+                        break;
                 }
             }
             catch (Exception e) {
